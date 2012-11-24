@@ -19,7 +19,7 @@ define('PKG_COMMIT',getGitCommitId(dirname(dirname(__FILE__))));
 
 echo "Building from commit #".PKG_COMMIT."\n";
 /* define build paths */
-$root = '/var/www/modx/grideditor/';
+$root = '/var/www/modx/easyupload/';
 $build = dirname(__FILE__).'/';
 $sources = array(
     'root' => $root,
