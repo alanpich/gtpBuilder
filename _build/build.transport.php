@@ -11,10 +11,10 @@ set_time_limit(0);
 require_once dirname(__FILE__).'/build.tools.php';
 
 /* define package names */
-define('PKG_NAME','GridEditor');
-define('PKG_NAME_LOWER','grideditor');
-define('PKG_VERSION','1.0');
-define('PKG_RELEASE','rc1');
+define('PKG_NAME','gtpBuilder');
+define('PKG_NAME_LOWER','gtpbuilder');
+define('PKG_VERSION','0.1');
+define('PKG_RELEASE','alpha');
 define('PKG_COMMIT',getGitCommitId(dirname(dirname(__FILE__))));
 
 echo "Building from commit #".PKG_COMMIT."\n";
@@ -53,15 +53,6 @@ $builder->registerNamespace(PKG_NAME_LOWER,false,true,'{core_path}components/'.P
 $category= $modx->newObject('modCategory');
 $category->set('id',1);
 $category->set('category',PKG_NAME);
-
-// Add in demo config chunk ====================================================
-$modx->log(modX::LOG_LEVEL_INFO,'Packaging in demo config chunk..');
-$chunks = array($modx->newObject('modChunk',array(
-        'name' => 'grideditor.config.demo',
-        'description' => 'Demo configuration file for GridEditor',
-        'snippet' => getSnippetContent($sources['elements'].'chunks/grideditor.config.demo.php')
-    )));
-$category->addMany($chunks);
 
 // Create Vehicle & add to package =============================================
 $attr = array(
