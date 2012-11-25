@@ -90,8 +90,9 @@ class gtpBuilder {
         
         // Run the build scripts
         $this->log("Running package build script...");
-        define('LOG_TARGET','FILE');
-        $output = @ include $buildScript;
+        ob_start();
+        @ include $buildScript;
+        $output = ob_get_clean();
         $this->log("Build completed");
         
         // Remove archive folder
