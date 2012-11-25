@@ -1,0 +1,13 @@
+/* 
+    Document   : styles
+    Created on : 24-Nov-2012, 17:52:36
+    Author     : alan
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.gtpbuilder-github-auth-fieldset {
+    background-image: url(../img/github-logo.png);
+    background-repeat: no-repeat;
+    background-position: 90% 80%;
+}
