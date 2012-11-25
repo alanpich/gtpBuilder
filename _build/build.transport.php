@@ -13,7 +13,7 @@ require_once dirname(__FILE__).'/build.tools.php';
 /* define package names */
 define('PKG_NAME','gtpBuilder');
 define('PKG_NAME_LOWER','gtpbuilder');
-define('PKG_VERSION','0.1');
+define('PKG_VERSION','0.2');
 define('PKG_RELEASE','alpha');
 define('PKG_COMMIT',getGitCommitId(dirname(dirname(__FILE__))));
 

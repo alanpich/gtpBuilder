@@ -70,6 +70,7 @@ gtpBuilder.window.Interface = function(config) {
         ,listeners: {
             'beforeSubmit': {fn:this.beforeSubmit,scope:this}
             ,'success': {fn:this.onSuccess,scope:this}
+            ,'failure': {fn:this.onFailure,scope:this}
         }
         ,fields: [{
             xtype: 'fieldset'
@@ -125,7 +126,10 @@ Ext.extend(gtpBuilder.window.Interface,MODx.Window,{
            ,show_filename: 0
            ,listeners: {
              'shutdown': {fn:function() {
-                 /* do code here when you close the console */
+                     console.log(this.console);
+                 if(this.console.isSuccess){
+                     document.location.href = '?a=69';
+                 }
              },scope:this}
            }
         });
@@ -133,6 +137,25 @@ Ext.extend(gtpBuilder.window.Interface,MODx.Window,{
     }
     
     ,onSuccess: function(){
+        MODx.Ajax.request({
+            url: MODx.config.connectors_url+'workspace/package/index.php'
+            ,params: {
+                action: 'scanlocal'
+               ,register: 'mgr'
+               ,topic: '/gtpbuilder/'
+            }
+            ,listeners: {
+                   'success':{fn:function() {
+                       this.console.isSuccess = true;
+                       this.console.fireEvent('complete');
+                   },scope:this}
+               }
+        });
+    }
+    
+    ,onFailure: function(){
+        console.log('fail');
+        this.console.isSuccess = false;
         this.console.fireEvent('complete');
     }
     

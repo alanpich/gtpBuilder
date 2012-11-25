@@ -33,15 +33,17 @@ class gtpBuilderTransportPackageBuildProcessor extends modProcessor {
             }
         };
         
-        // Run the builder!
-        if($username != false && !empty($username)){
-            $this->helper->setGithubCredentials($username,$password);
+        $success = gtpBuilder::buildFromGithub('Github',$owner,$repo,$branch,$username,$password);        
+        
+        if($success){
+            $this->helper->warn('Package built successfully');
+            $this->helper->log('COMPLETED');
+            return $this->success();
+        } else {
+            $this->helper->warn('Package build failed');
+            $this->helper->log('COMPLETED');
+            return $this->failure();
         };
-        $this->helper->buildFromGithub($owner,$repo,$branch);        
-        
-        $this->helper->log('COMPLETE');
-        
-        return $this->success();
     }//
     
     
