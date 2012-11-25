@@ -17,8 +17,6 @@ define('PKG_VERSION','0.2');
 define('PKG_RELEASE','alpha');
 define('PKG_COMMIT',getGitCommitId(dirname(dirname(__FILE__))));
 
-define('LOG_TARGET','ECHO');
-
 echo "Building from commit #".PKG_COMMIT."\n";
 /* define build paths */
 $root = '/var/www/modx/easyupload/';
@@ -43,7 +41,7 @@ $modx= new modX();
 $modx->initialize('mgr');
 echo '<pre>'; /* used for nice formatting of log messages */
 $modx->setLogLevel(modX::LOG_LEVEL_INFO);
-$modx->setLogTarget(LOG_TARGET);
+$modx->setLogTarget('ECHO');
 
 // Start Building the transport package ========================================
 $modx->loadClass('transport.modPackageBuilder','',false, true);
