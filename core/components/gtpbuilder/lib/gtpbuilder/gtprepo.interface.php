@@ -113,8 +113,9 @@ abstract class gtpRepo {
         // Make request using cURL
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true); 
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch,CURLOPT_USERAGENT,"MODX transport packages builder direct from GitHub/1.0");
         if(!empty($self->auth_user)){       
             curl_setopt($ch, CURLOPT_USERPWD, $self->auth_user.":".$self->auth_pass);
         }
