@@ -98,6 +98,33 @@ abstract class gtpRepo {
     }
     
     /**
+     * Exec cURL request with following redirects
+     * @param resource $ch cURL request object
+     * @param int $redirects Number of completed redirects
+     * @return string
+     */
+    protected static function curl_redirect_exec($ch, &$redirects) {
+        $self = self::getInstance();
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        $data = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($http_code == 301 || $http_code == 302) {
+            list($header) = explode("\r\n\r\n", $data, 2);
+            $matches = array();
+            preg_match('/(Location:|URI:)(.*?)\n/', $header, $matches);
+            $url = trim(array_pop($matches));
+            $url_parsed = parse_url($url);
+            if (isset($url_parsed)) {
+                curl_setopt($ch, CURLOPT_URL, $url);
+                $redirects++;
+                return $self->curl_redirect_exec($ch, $redirects);
+            }
+        }
+        list(,$body) = explode("\r\n\r\n", $data, 2);
+        return $body;
+    }
+    
+    /**
      * Make a cURL request and return data
      * @param string $url URL to request
      * @param boolean $parseJSON Attempt to parse as json
@@ -114,12 +141,13 @@ abstract class gtpRepo {
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch,CURLOPT_USERAGENT,"MODX transport packages builder direct from GitHub/1.0");
         if(!empty($self->auth_user)){       
             curl_setopt($ch, CURLOPT_USERPWD, $self->auth_user.":".$self->auth_pass);
         }
-        $content = curl_exec($ch);
+        $redirects = 0;
+        $content = $self->curl_redirect_exec($ch,$redirects);
         curl_close($ch);
         
         if($parseJSON!==true){ 
